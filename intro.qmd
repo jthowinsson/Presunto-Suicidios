@@ -1,0 +1,17 @@
+# Introducción
+
+## Aproximación Conceptual
+
+Campaña de prevención del suicidio, Colombia.
+
+::: {style="text-align: justify;"}
+El suicidio es el acto deliberado mediante el cual una persona decide poner fin a su propia vida, constituyendo una problemática compleja que integra dimensiones psicológicas, sociales, culturales y biológicas. No existe una definición única y universal, pero en el ámbito de la salud pública y la psicología se reconoce como una acción autoinfligida con el propósito directo de provocar la muerte, bien sea de manera activa o pasiva [@psicysalud2021] [@oms2025] [@ops2025].
+
+El suicidio es uno de los principales problemas de salud pública a nivel mundial y está íntimamente vinculado con la salud mental. La evidencia científica señala que la mayoría de los suicidios están precedidos por trastornos mentales, especialmente depresión, trastorno bipolar, esquizofrenia, trastornos de personalidad y abuso de sustancias psicoactivas. De hecho, hasta el 95% de quienes mueren por suicidio presentan un diagnóstico psiquiátrico previo [@msdmanual2025] [@psicysalud2021].
+
+Según la Organización Mundial de la Salud, más de 720,000 personas fallecen anualmente por esta causa, ubicándose como una de las principales causas de muerte en adolescentes y adultos jóvenes [@oms2025] [@ops2025]. Los intentos de suicidio y la ideación suicida — pensamientos recurrentes de autolesión o muerte — forman parte del espectro del comportamiento suicida y tienen una base principalmente psicológica y emocional, relacionada con alteraciones en la salud mental.
+
+Existen múltiples factores de riesgo que contribuyen al suicidio: aislamiento social, desesperanza, problemas económicos, crisis familiares o personales y falta de apoyo emocional, todos estrechamente asociados con la desestabilización de la salud mental. La literatura reporta que el suicidio está rodeado de estigma y tabúes sociales, dificultando su prevención. Sin embargo, debe entenderse como un evento prevenible, abordando adecuadamente la salud mental mediante políticas integrales, intervenciones basadas en evidencia y fortalecimiento de factores protectores en la comunidad [@ops2025] [@oms2025] [@msdmanual2025].
+
+Por su magnitud y multidimensionalidad, el suicidio exige un enfoque científico, interdisciplinario y ético desde la perspectiva de la salud mental y la salud pública.
+:::
