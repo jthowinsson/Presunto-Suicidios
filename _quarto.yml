@@ -1,25 +1,36 @@
 project:
   type: book
+  resources:
+    - images/
 
 book:
-  title: "Presunto Suicidios"
-  author: "Norah Jones"
+  title: "Presunto Suicidios en Colombia"
+  author: 
+    - "Autor   :Msc Jesús D. Zamora Th."
+    - "Coautora: Bianca Yibirin U."
+    - "Coautora: Laura V. Velásquez O."
   date: "9/29/2025"
   chapters:
     - index.qmd
     - intro.qmd
+    - Eda.qmd
     - summary.qmd
     - references.qmd
 
 bibliography: references.bib
+csl: vancouver.csl
+include-after-body:
+  - footer.html
+  - _footer.html
 
 format:
   html:
     theme:
       - cosmo
       - brand
-  pdf:
-    documentclass: scrreprt
+    include-in-header: _header.html
+    code-fold: false
+    math-method: mathjax
 
 editor: visual
 

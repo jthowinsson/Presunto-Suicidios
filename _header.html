@@ -1,0 +1,15 @@
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Busca el título del libro dentro del TOC
+  const tocTitle = document.querySelector('#quarto-sidebar .sidebar-title, #TOC .title');
+  if (tocTitle) {
+    const img = document.createElement('img');
+    img.src = 'images/Imagen_portada.png';
+    img.alt = 'Portada';
+    img.style.width = '100%';
+    img.style.borderRadius = '10px';
+    img.style.marginTop = '10px';
+    tocTitle.insertAdjacentElement('afterend', img);
+  }
+});
+</script>

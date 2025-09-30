@@ -1,0 +1,72 @@
+<!-- Iconos Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+.top-right-icons {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  z-index: 9999;
+  display: flex;
+  gap: 10px;
+}
+.top-right-icons a {
+  color: var(--bs-navbar-color);
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+.top-right-icons a:hover {
+  color: var(--bs-navbar-hover-color);
+}
+</style>
+
+<div class="top-right-icons">
+  <!-- GitHub -->
+  <a href="https://github.com/jthowinsson/Dengue3" target="_blank" title="Repositorio">
+    <i class="bi bi-github"></i>
+  </a>
+
+  <!-- Descargar PDF -->
+  <a href="Dengue3.pdf" download="Dengue3.pdf" title="Descargar PDF">
+    <i class="bi bi-file-earmark-pdf"></i>
+  </a>
+
+  <!-- Descargar Markdown -->
+  <a href="index.md" download="index.md" title="Descargar Markdown">
+    <i class="bi bi-file-earmark-text"></i>
+  </a>
+
+  <!-- Pantalla completa -->
+  <a href="javascript:void(0)" onclick="document.documentElement.requestFullscreen()" title="Pantalla completa">
+    <i class="bi bi-arrows-fullscreen"></i>
+  </a>
+
+  <!-- Light / Dark -->
+  <a href="javascript:void(0)" id="theme-toggle" title="Cambiar tema">
+    <i class="bi bi-sun-fill" id="theme-icon"></i>
+  </a>
+</div>
+
+<script>
+const html = document.documentElement;
+const icon = document.getElementById('theme-icon');
+const toggle = document.getElementById('theme-toggle');
+const saved = localStorage.getItem('quarto-color-scheme');
+
+if (saved === 'dark') {
+  html.setAttribute('data-bs-theme', 'dark');
+  icon.className = 'bi bi-moon-fill';
+}
+
+toggle.addEventListener('click', () => {
+  if (html.getAttribute('data-bs-theme') === 'dark') {
+    html.removeAttribute('data-bs-theme');
+    icon.className = 'bi bi-sun-fill';
+    localStorage.setItem('quarto-color-scheme', 'light');
+  } else {
+    html.setAttribute('data-bs-theme', 'dark');
+    icon.className = 'bi bi-moon-fill';
+    localStorage.setItem('quarto-color-scheme', 'dark');
+  }
+});
+</script>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>References – Presunto Suicidios</title>
+<title>References – Presunto Suicidios en Colombia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -87,6 +87,21 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Busca el título del libro dentro del TOC
+  const tocTitle = document.querySelector('#quarto-sidebar .sidebar-title, #TOC .title');
+  if (tocTitle) {
+    const img = document.createElement('img');
+    img.src = 'images/Imagen_portada.png';
+    img.alt = 'Portada';
+    img.style.width = '100%';
+    img.style.borderRadius = '10px';
+    img.style.marginTop = '10px';
+    tocTitle.insertAdjacentElement('afterend', img);
+  }
+});
+</script>
 
 
 </head>
@@ -115,7 +130,7 @@ div.csl-indent {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Presunto Suicidios</a> 
+      <a href="./">Presunto Suicidios en Colombia</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -134,13 +149,19 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./intro.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Eda.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Análisis Exploratorio de Datos</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -179,16 +200,111 @@ div.csl-indent {
 </header>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-knuth84" class="csl-entry" role="listitem">
-Knuth, Donald E. 1984. <span>“Literate Programming.”</span> <em>Comput.
-J.</em> 27 (2): 97–111. <a href="https://doi.org/10.1093/comjnl/27.2.97">https://doi.org/10.1093/comjnl/27.2.97</a>.
+<div id="refs" class="references csl-bib-body" role="list">
+<div id="ref-oms2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">1. </div><div class="csl-right-inline">Organización Mundial de la Salud. Suicidio
+[Internet]. 2025. Available from: <a href="https://www.who.int/es/news-room/fact-sheets/detail/suicide">https://www.who.int/es/news-room/fact-sheets/detail/suicide</a></div>
+</div>
+<div id="ref-ops2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">2. </div><div class="csl-right-inline">Organización Panamericana de la Salud y
+Organización Mundial de la Salud. Prevención del suicidio - OPS/OMS
+[Internet]. 2025. Available from: <a href="https://www.paho.org/es/temas/prevencion-suicidio">https://www.paho.org/es/temas/prevencion-suicidio</a></div>
+</div>
+<div id="ref-msdmanual2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">3. </div><div class="csl-right-inline">Merck Sharp &amp; Dohme Corp. Conducta suicida
+- trastornos de la salud mental [Internet]. 2025. Available from: <a href="https://www.msdmanuals.com/es/hogar/trastornos-de-la-salud-mental/conducta-suicida-y-autolesiva/conducta-suicida">https://www.msdmanuals.com/es/hogar/trastornos-de-la-salud-mental/conducta-suicida-y-autolesiva/conducta-suicida</a></div>
+</div>
+<div id="ref-psicysalud2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">4. </div><div class="csl-right-inline">Escamilla-Ortega A, Morales-Ortega D.
+Definición de suicidio y de los pensamientos y conductas relacionadas.
+Psicología y Salud [Internet]. 2021;27(2):203–12. Available from: <a href="https://psicologiaysalud.uv.mx/index.php/psicysalud/article/view/2709">https://psicologiaysalud.uv.mx/index.php/psicysalud/article/view/2709</a></div>
 </div>
 </div>
 
 
 
 </main> <!-- /main -->
+
+<div style="border-top: 1px solid #555; margin-top: 20px; padding-top: 10px; 
+color: #888; font-size: 12px;">
+  By Jesús D. Zamora Thowinsson.
+  <div style="margin-top: 5px;">
+    © Copyright 2025.
+  </div>
+</div>
+
+<!-- Iconos Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+.top-right-icons {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  z-index: 9999;
+  display: flex;
+  gap: 10px;
+}
+.top-right-icons a {
+  color: var(--bs-navbar-color);
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+.top-right-icons a:hover {
+  color: var(--bs-navbar-hover-color);
+}
+</style>
+
+<div class="top-right-icons">
+  <!-- GitHub -->
+  <a href="https://github.com/jthowinsson/Dengue3" target="_blank" title="Repositorio">
+    <i class="bi bi-github"></i>
+  </a>
+
+  <!-- Descargar PDF -->
+  <a href="Dengue3.pdf" download="Dengue3.pdf" title="Descargar PDF">
+    <i class="bi bi-file-earmark-pdf"></i>
+  </a>
+
+  <!-- Descargar Markdown -->
+  <a href="index.md" download="index.md" title="Descargar Markdown">
+    <i class="bi bi-file-earmark-text"></i>
+  </a>
+
+  <!-- Pantalla completa -->
+  <a href="javascript:void(0)" onclick="document.documentElement.requestFullscreen()" title="Pantalla completa">
+    <i class="bi bi-arrows-fullscreen"></i>
+  </a>
+
+  <!-- Light / Dark -->
+  <a href="javascript:void(0)" id="theme-toggle" title="Cambiar tema">
+    <i class="bi bi-sun-fill" id="theme-icon"></i>
+  </a>
+</div>
+
+<script>
+const html = document.documentElement;
+const icon = document.getElementById('theme-icon');
+const toggle = document.getElementById('theme-toggle');
+const saved = localStorage.getItem('quarto-color-scheme');
+
+if (saved === 'dark') {
+  html.setAttribute('data-bs-theme', 'dark');
+  icon.className = 'bi bi-moon-fill';
+}
+
+toggle.addEventListener('click', () => {
+  if (html.getAttribute('data-bs-theme') === 'dark') {
+    html.removeAttribute('data-bs-theme');
+    icon.className = 'bi bi-sun-fill';
+    localStorage.setItem('quarto-color-scheme', 'light');
+  } else {
+    html.setAttribute('data-bs-theme', 'dark');
+    icon.className = 'bi bi-moon-fill';
+    localStorage.setItem('quarto-color-scheme', 'dark');
+  }
+});
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -591,7 +707,7 @@ J.</em> 27 (2): 97–111. <a href="https://doi.org/10.1093/comjnl/27.2.97">https
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./summary.html" class="pagination-link" aria-label="Summary">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

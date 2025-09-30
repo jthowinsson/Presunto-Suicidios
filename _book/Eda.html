@@ -1,0 +1,2601 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; Análisis Exploratorio de Datos – Presunto Suicidios en Colombia</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./summary.html" rel="next">
+<link href="./intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-485d01fc63b59abcd3ee1bf1e8e2748d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Busca el título del libro dentro del TOC
+  const tocTitle = document.querySelector('#quarto-sidebar .sidebar-title, #TOC .title');
+  if (tocTitle) {
+    const img = document.createElement('img');
+    img.src = 'images/Imagen_portada.png';
+    img.alt = 'Portada';
+    img.style.width = '100%';
+    img.style.borderRadius = '10px';
+    img.style.marginTop = '10px';
+    tocTitle.insertAdjacentElement('afterend', img);
+  }
+});
+</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Eda.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Análisis Exploratorio de Datos</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Presunto Suicidios en Colombia</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Eda.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Análisis Exploratorio de Datos</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#análisis-univariado" id="toc-análisis-univariado" class="nav-link active" data-scroll-target="#análisis-univariado"><span class="header-section-number">2.1</span> Análisis Univariado</a>
+  <ul class="collapse">
+  <li><a href="#desarrollo-del-análisis-exploratorio-de-datos" id="toc-desarrollo-del-análisis-exploratorio-de-datos" class="nav-link" data-scroll-target="#desarrollo-del-análisis-exploratorio-de-datos"><span class="header-section-number">2.1.1</span> Desarrollo del Análisis Exploratorio de Datos</a></li>
+  <li><a href="#mapeo-estandarización-de-las-variables-y-dimensiones-del-dataframe" id="toc-mapeo-estandarización-de-las-variables-y-dimensiones-del-dataframe" class="nav-link" data-scroll-target="#mapeo-estandarización-de-las-variables-y-dimensiones-del-dataframe"><span class="header-section-number">2.1.2</span> Mapeo, Estandarización de las Variables y dimensiones del DataFrame</a></li>
+  </ul></li>
+  <li><a href="#análisis-bivariado" id="toc-análisis-bivariado" class="nav-link" data-scroll-target="#análisis-bivariado"><span class="header-section-number">3</span> Análisis Bivariado</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Análisis Exploratorio de Datos</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="análisis-univariado" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="análisis-univariado"><span class="header-section-number">2.1</span> Análisis Univariado</h2>
+<div style="text-align: justify;">
+<p>El Análisis Exploratorio de Datos (EDA) constituye una etapa fundamental en toda investigación estadística, ya que permite comprender las características principales del conjunto de datos, identificar patrones, detectar posibles inconsistencias y orientar la preparación de la información antes del modelado.</p>
+<p>En este estudio, el EDA tiene como propósito examinar los registros de suicidios en Colombia durante el periodo 2015–2023, con el fin de describir las variables sociodemográficas y contextuales asociadas y evaluar la calidad de los datos para la construcción de un modelo de regresión XGBoost Regressor.</p>
+<p>En primer lugar, se realiza una revisión general del dataset, verificando el número de observaciones, la disponibilidad de variables y la presencia de valoreados.s faltantes o categorías indeterminadas. Posteriormente, se lleva a cabo un análisis univariado, en el que se describen la distribución de la variable dependiente (mecanismo de suicidio: generadores de asfixia vs otros) y de las principales variables independientes (sexo, edad, estado civil, escolaridad, escenario, zona, entre otras).</p>
+<p>En una segunda fase, se desarrolla un análisis bivariado, explorando las asociaciones preliminares entre el mecanismo de suicidio y las variables sociodemográficas/contextuales. Esto incluye el uso de tablas de contingencia, gráficos comparativos y estimaciones de razones de momios (odds ratios) crudas en variables binarias.</p>
+<p>Finalmente, a partir de los hallazgos del EDA, se definen las decisiones de recodificación, agrupación y preparación de variables que alimentarán el modelo de regresión XGBoost Regressor, asegurando la validez y consistencia de los resulto</p>
+</div>
+<section id="desarrollo-del-análisis-exploratorio-de-datos" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="desarrollo-del-análisis-exploratorio-de-datos"><span class="header-section-number">2.1.1</span> Desarrollo del Análisis Exploratorio de Datos</h3>
+<p><strong>Carga, estandarización y dimensiones del DataFrame</strong></p>
+<div style="text-align: justify;">
+<p>El dataFrame contiene 23,137 registros y 42 variables, lo que proporciona una base sólida para el análisis estadístico y la modelización, permitiendo explorar diversas características sociodemográficas y contextuales relacionadas con los suicidios en Colombia. Fuente: <a href="https://www.datos.gov.co/Justicia-y-Derecho/Presuntos-Suicidios-Colombia-2015-a-2024-Cifras-de/f75u-mirk/about_data">Datos Abiertos</a>, la cual es actualizada periódicamente por el Ministerio de Salud y Protección Social de Colombia.</p>
+<p>Las variables incluyen información sobre el año del evento, la edad, el sexo, el estado civil, la escolaridad, el escenario del suicidio, la zona (urbana/rural), el departamento y municipio de ocurrencia, entre otras. Esta diversidad de variables permite un análisis integral de los factores asociados a los suicidios en el país.</p>
+<p>Adicionalmente, se observa que algunas variables presentan valores faltantes o categorías indeterminadas, lo que requerirá una atención especial durante el análisis para asegurar la calidad y validez de los resultados.</p>
+<p>Y finalmente al Dataframe se le adiccionan dos columnas nuevas: Longitud y Latitud, las cuales son obtenidas a partir de la columna Municipio de ocurrencia, mediante la librería geopy. Fuente: <a href="https://geoportal.dane.gov.co/servicios/descarga-y-metadatos/datos-geoestadisticos/">DANE</a>.</p>
+</div>
+</section>
+<section id="mapeo-estandarización-de-las-variables-y-dimensiones-del-dataframe" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="mapeo-estandarización-de-las-variables-y-dimensiones-del-dataframe"><span class="header-section-number">2.1.2</span> Mapeo, Estandarización de las Variables y dimensiones del DataFrame</h3>
+<ul>
+<li><ol type="1">
+<li><em>Estandarización de Nombres de Columnas</em>:</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<caption>Mapeo de nombres de columnas y Estandarización</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Nombre original</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Nombre estandarizado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ID</td>
+<td style="text-align: left;">id</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Año.del.hecho</td>
+<td style="text-align: left;">a_o_del_hecho</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Grupo.de.edad.de.la.victima</td>
+<td style="text-align: left;">grupo_de_edad_de_la_victima</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Grupo.Mayor.Menor.de.Edad</td>
+<td style="text-align: left;">grupo_mayor_menor_de_edad</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Edad.judicial</td>
+<td style="text-align: left;">edad_judicial</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ciclo.Vital</td>
+<td style="text-align: left;">ciclo_vital</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sexo.de.la.victima</td>
+<td style="text-align: left;">sexo_de_la_victima</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Estado.Civil</td>
+<td style="text-align: left;">estado_civil</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">País.de.Nacimiento.de.la.Víctima</td>
+<td style="text-align: left;">pais_de_nacimiento_de_la_victima</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Escolaridad</td>
+<td style="text-align: left;">escolaridad</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Pertenencia.Grupal</td>
+<td style="text-align: left;">pertenencia_grupal</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mes.del.hecho</td>
+<td style="text-align: left;">mes_del_hecho</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dia.del.hecho</td>
+<td style="text-align: left;">dia_del_hecho</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rango.de.Hora.del.Hecho.X.3.Horas</td>
+<td style="text-align: left;">rango_de_hora_del_hecho_x_3_horas</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Código.Dane.Municipio</td>
+<td style="text-align: left;">codigo_dane_municipio</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Municipio.del.hecho.DANE</td>
+<td style="text-align: left;">municipio_del_hecho_dane</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Departamento.del.hecho.DANE</td>
+<td style="text-align: left;">departamento_del_hecho_dane</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Código.Dane.Departamento</td>
+<td style="text-align: left;">codigo_dane_departamento</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Escenario.del.Hecho</td>
+<td style="text-align: left;">escenario_del_hecho</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Zona.del.Hecho</td>
+<td style="text-align: left;">zona_del_hecho</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Actividad.Durante.el.Hecho</td>
+<td style="text-align: left;">actividad_durante_el_hecho</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Circunstancia.del.Hecho</td>
+<td style="text-align: left;">circunstancia_del_hecho</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Manera.de.Muerte</td>
+<td style="text-align: left;">manera_de_muerte</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mecanismo.Causal</td>
+<td style="text-align: left;">mecanismo_causal</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Diagnostico.Topográfico.de.la.Lesión</td>
+<td style="text-align: left;">diagnostico_topografico_de_la_lesion</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Presunto.Agresor</td>
+<td style="text-align: left;">presunto_agresor</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Condición.de.la.Víctima</td>
+<td style="text-align: left;">condicion_de_la_victima</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Medio.de.Desplazamiento.o.Transporte</td>
+<td style="text-align: left;">medio_de_desplazamiento_o_transporte</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Servicio.del.Vehículo</td>
+<td style="text-align: left;">servicio_del_vehiculo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clase.o.Tipo.de.Accidente</td>
+<td style="text-align: left;">clase_o_tipo_de_accidente</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Objeto.de.Colisión</td>
+<td style="text-align: left;">objeto_de_colision</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Servicio.del.Objeto.de.Colisión</td>
+<td style="text-align: left;">servicio_del_objeto_de_colision</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Razón.del.Suicidio</td>
+<td style="text-align: left;">razon_del_suicidio</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Localidad.del.Hecho</td>
+<td style="text-align: left;">localidad_del_hecho</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ancestro.Racial</td>
+<td style="text-align: left;">ancestro_racial</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Codigo_Dane_Municipio_norm</td>
+<td style="text-align: left;">codigo_dane_municipio_norm</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Muni_Cod</td>
+<td style="text-align: left;">muni_cod</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Muni_Nom</td>
+<td style="text-align: left;">muni_nom</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Depto_Cod</td>
+<td style="text-align: left;">depto_cod</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Depto_Nom</td>
+<td style="text-align: left;">depto_nom</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">latitud</td>
+<td style="text-align: left;">latitud</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">longitud</td>
+<td style="text-align: left;">longitud</td>
+</tr>
+</tbody><tfoot>
+<tr class="odd">
+<td style="text-align: left; padding: 0;"><sup></sup> <em>Fuente: <a href="https://www.datos.gov.co/Justicia-y-Derecho/Presuntos-Suicidios-Colombia-2015-a-2024-Cifras-de/f75u-mirk/about_data" target="_blank">datos.gov.co</a></em></td>
+<td style="text-align: left;"></td>
+</tr>
+</tfoot>
+
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 23544    42</code></pre>
+</div>
+</div>
+<p>Se hace necesario estandarizar las variables categóricas para asegurar la consistencia en el análisis univariado y bivariado. Esto incluye: - Convertir todas las entradas a minúsculas para evitar duplicados por diferencias de mayúsculas. - Eliminar espacios en blanco al inicio y final de las cadenas. - Reemplazar valores faltantes o ambiguos (como ‘nan’, ‘n/a’, ‘desconocido’) por una categoría uniforme, por ejemplo ‘Falta_dato’.</p>
+<ol start="2" type="1">
+<li><em>Información general del DataFrame</em></li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+--- Información general ---</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 23,544
+Columns: 42
+$ id                                   &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11…
+$ a_o_del_hecho                        &lt;int&gt; 2015, 2015, 2015, 2015, 2015, 201…
+$ grupo_de_edad_de_la_victima          &lt;chr&gt; "(18 a 19)", "(25 a 29)", "(35 a …
+$ grupo_mayor_menor_de_edad            &lt;chr&gt; "b) Mayores de Edad (&gt;18 años)", …
+$ edad_judicial                        &lt;chr&gt; "(18 a 19)", "(25 a 28)", "(35 a …
+$ ciclo_vital                          &lt;chr&gt; "(18 a 28) Juventud", "(18 a 28) …
+$ sexo_de_la_victima                   &lt;chr&gt; "Mujer", "Hombre", "Hombre", "Hom…
+$ estado_civil                         &lt;chr&gt; "Soltero(a)", "Soltero(a)", "Unió…
+$ pais_de_nacimiento_de_la_victima     &lt;chr&gt; "Colombia", "Colombia", "Colombia…
+$ escolaridad                          &lt;chr&gt; "Educación inicial y educación pr…
+$ pertenencia_grupal                   &lt;chr&gt; "Grupos étnicos", "Ninguno", "Cam…
+$ mes_del_hecho                        &lt;chr&gt; "Enero", "Enero", "Enero", "Enero…
+$ dia_del_hecho                        &lt;chr&gt; "Lunes", "Sábado", "Martes", "Vie…
+$ rango_de_hora_del_hecho_x_3_horas    &lt;chr&gt; "09:00 a 11:59", "18:00 a 20:59",…
+$ codigo_dane_municipio                &lt;int&gt; 66572, 81001, 81220, 63470, 63130…
+$ municipio_del_hecho_dane             &lt;chr&gt; "Pueblo Rico", "Arauca", "Cravo N…
+$ departamento_del_hecho_dane          &lt;chr&gt; "Risaralda", "Arauca", "Arauca", …
+$ codigo_dane_departamento             &lt;int&gt; 66, 81, 81, 63, 63, 68, 68, 15, 8…
+$ escenario_del_hecho                  &lt;chr&gt; "Vivienda", "Vivienda", "Zonas de…
+$ zona_del_hecho                       &lt;chr&gt; "Cabecera municipal", "Parte rura…
+$ actividad_durante_el_hecho           &lt;chr&gt; "Actividades de trabajo doméstico…
+$ circunstancia_del_hecho              &lt;chr&gt; "Autolesión voluntaria", "Autoles…
+$ manera_de_muerte                     &lt;chr&gt; "Violenta - Suicidio", "Violenta …
+$ mecanismo_causal                     &lt;chr&gt; "Generadores de asfixia", "Genera…
+$ diagnostico_topografico_de_la_lesion &lt;chr&gt; "Trauma de cuello", "Trauma de cu…
+$ presunto_agresor                     &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ condicion_de_la_victima              &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ medio_de_desplazamiento_o_transporte &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ servicio_del_vehiculo                &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ clase_o_tipo_de_accidente            &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ objeto_de_colision                   &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ servicio_del_objeto_de_colision      &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ razon_del_suicidio                   &lt;chr&gt; "Sin información", "Conflicto con…
+$ localidad_del_hecho                  &lt;chr&gt; "No aplica", "No aplica", "No apl…
+$ ancestro_racial                      &lt;chr&gt; "Indigena", "Mestizo", "Mestizo",…
+$ codigo_dane_municipio_norm           &lt;int&gt; 66572, 81001, 81220, 63470, 63130…
+$ muni_cod                             &lt;int&gt; 66572, 81001, 81220, 63470, 63130…
+$ muni_nom                             &lt;chr&gt; "PUEBLO RICO", "ARAUCA", "CRAVO N…
+$ depto_cod                            &lt;int&gt; 66, 81, 81, 63, 63, 68, 68, 15, 8…
+$ depto_nom                            &lt;chr&gt; "RISARALDA", "ARAUCA", "ARAUCA", …
+$ latitud                              &lt;dbl&gt; 5.222043, 7.072726, 6.303913, 4.5…
+$ longitud                             &lt;dbl&gt; -76.03080, -70.74741, -70.20429, …</code></pre>
+</div>
+</div>
+<ul>
+<li><ol start="3" type="1">
+<li><em>Visualizar las primeras filas del DataFrame</em></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>--- Primeras filas ---</code></pre>
+</div>
+<div class="cell-output-display">
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:100%; ">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">id</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">a_o_del_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">grupo_de_edad_de_la_victima</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">grupo_mayor_menor_de_edad</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">edad_judicial</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">ciclo_vital</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">sexo_de_la_victima</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">estado_civil</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">pais_de_nacimiento_de_la_victima</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">escolaridad</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">pertenencia_grupal</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">mes_del_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">dia_del_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">rango_de_hora_del_hecho_x_3_horas</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">codigo_dane_municipio</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">municipio_del_hecho_dane</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">departamento_del_hecho_dane</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">codigo_dane_departamento</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">escenario_del_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">zona_del_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">actividad_durante_el_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">circunstancia_del_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">manera_de_muerte</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">mecanismo_causal</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">diagnostico_topografico_de_la_lesion</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">presunto_agresor</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">condicion_de_la_victima</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">medio_de_desplazamiento_o_transporte</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">servicio_del_vehiculo</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">clase_o_tipo_de_accidente</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">objeto_de_colision</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">servicio_del_objeto_de_colision</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">razon_del_suicidio</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">localidad_del_hecho</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">ancestro_racial</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">codigo_dane_municipio_norm</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">muni_cod</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">muni_nom</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">depto_cod</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; position: sticky; top: 0; background-color: #FFFFFF;">depto_nom</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">latitud</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; position: sticky; top: 0; background-color: #FFFFFF;">longitud</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">(18 a 19)</td>
+<td style="text-align: left;">b) Mayores de Edad (&gt;18 años)</td>
+<td style="text-align: left;">(18 a 19)</td>
+<td style="text-align: left;">(18 a 28) Juventud</td>
+<td style="text-align: left;">Mujer</td>
+<td style="text-align: left;">Soltero(a)</td>
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left;">Educación inicial y educación preescolar</td>
+<td style="text-align: left;">Grupos étnicos</td>
+<td style="text-align: left;">Enero</td>
+<td style="text-align: left;">Lunes</td>
+<td style="text-align: left;">09:00 a 11:59</td>
+<td style="text-align: right;">66572</td>
+<td style="text-align: left;">Pueblo Rico</td>
+<td style="text-align: left;">Risaralda</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">Vivienda</td>
+<td style="text-align: left;">Cabecera municipal</td>
+<td style="text-align: left;">Actividades de trabajo doméstico no pagado para el uso del propio hogar</td>
+<td style="text-align: left;">Autolesión voluntaria</td>
+<td style="text-align: left;">Violenta - Suicidio</td>
+<td style="text-align: left;">Generadores de asfixia</td>
+<td style="text-align: left;">Trauma de cuello</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Indigena</td>
+<td style="text-align: right;">66572</td>
+<td style="text-align: right;">66572</td>
+<td style="text-align: left;">PUEBLO RICO</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: left;">RISARALDA</td>
+<td style="text-align: right;">5.222043</td>
+<td style="text-align: right;">-76.03080</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">(25 a 29)</td>
+<td style="text-align: left;">b) Mayores de Edad (&gt;18 años)</td>
+<td style="text-align: left;">(25 a 28)</td>
+<td style="text-align: left;">(18 a 28) Juventud</td>
+<td style="text-align: left;">Hombre</td>
+<td style="text-align: left;">Soltero(a)</td>
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left;">Educación inicial y educación preescolar</td>
+<td style="text-align: left;">Ninguno</td>
+<td style="text-align: left;">Enero</td>
+<td style="text-align: left;">Sábado</td>
+<td style="text-align: left;">18:00 a 20:59</td>
+<td style="text-align: right;">81001</td>
+<td style="text-align: left;">Arauca</td>
+<td style="text-align: left;">Arauca</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">Vivienda</td>
+<td style="text-align: left;">Parte rural (vereda y campo)</td>
+<td style="text-align: left;">Actividades de trabajo doméstico no pagado para el uso del propio hogar</td>
+<td style="text-align: left;">Autolesión voluntaria</td>
+<td style="text-align: left;">Violenta - Suicidio</td>
+<td style="text-align: left;">Generadores de asfixia</td>
+<td style="text-align: left;">Trauma de cuello</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Conflicto con pareja o ex pareja</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Mestizo</td>
+<td style="text-align: right;">81001</td>
+<td style="text-align: right;">81001</td>
+<td style="text-align: left;">ARAUCA</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">ARAUCA</td>
+<td style="text-align: right;">7.072726</td>
+<td style="text-align: right;">-70.74741</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">(35 a 39)</td>
+<td style="text-align: left;">b) Mayores de Edad (&gt;18 años)</td>
+<td style="text-align: left;">(35 a 39)</td>
+<td style="text-align: left;">(29 a 59) Adultez</td>
+<td style="text-align: left;">Hombre</td>
+<td style="text-align: left;">Unión libre</td>
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left;">Educación inicial y educación preescolar</td>
+<td style="text-align: left;">Campesinos (as) y/o trabajadores (as) del campo</td>
+<td style="text-align: left;">Enero</td>
+<td style="text-align: left;">Martes</td>
+<td style="text-align: left;">09:00 a 11:59</td>
+<td style="text-align: right;">81220</td>
+<td style="text-align: left;">Cravo Norte</td>
+<td style="text-align: left;">Arauca</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">Zonas de Actividades Agropecuarias</td>
+<td style="text-align: left;">Parte rural (vereda y campo)</td>
+<td style="text-align: left;">Actividades de trabajo doméstico no pagado para el uso del propio hogar</td>
+<td style="text-align: left;">Autolesión voluntaria</td>
+<td style="text-align: left;">Violenta - Suicidio</td>
+<td style="text-align: left;">Tóxico</td>
+<td style="text-align: left;">Politraumatismo</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Conflicto con pareja o ex pareja</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Mestizo</td>
+<td style="text-align: right;">81220</td>
+<td style="text-align: right;">81220</td>
+<td style="text-align: left;">CRAVO NORTE</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left;">ARAUCA</td>
+<td style="text-align: right;">6.303913</td>
+<td style="text-align: right;">-70.20429</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">(55 a 59)</td>
+<td style="text-align: left;">b) Mayores de Edad (&gt;18 años)</td>
+<td style="text-align: left;">(55 a 59)</td>
+<td style="text-align: left;">(29 a 59) Adultez</td>
+<td style="text-align: left;">Hombre</td>
+<td style="text-align: left;">Soltero(a)</td>
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left;">Educación inicial y educación preescolar</td>
+<td style="text-align: left;">Ninguno</td>
+<td style="text-align: left;">Enero</td>
+<td style="text-align: left;">Viernes</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: right;">63470</td>
+<td style="text-align: left;">Montenegro</td>
+<td style="text-align: left;">Quindío</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">Vivienda</td>
+<td style="text-align: left;">Cabecera municipal</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: left;">Autolesión voluntaria</td>
+<td style="text-align: left;">Violenta - Suicidio</td>
+<td style="text-align: left;">Generadores de asfixia</td>
+<td style="text-align: left;">Trauma de cuello</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Mestizo</td>
+<td style="text-align: right;">63470</td>
+<td style="text-align: right;">63470</td>
+<td style="text-align: left;">MONTENEGRO</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">QUINDÍO</td>
+<td style="text-align: right;">4.565057</td>
+<td style="text-align: right;">-75.74983</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">(45 a 49)</td>
+<td style="text-align: left;">b) Mayores de Edad (&gt;18 años)</td>
+<td style="text-align: left;">(45 a 49)</td>
+<td style="text-align: left;">(29 a 59) Adultez</td>
+<td style="text-align: left;">Hombre</td>
+<td style="text-align: left;">Soltero(a)</td>
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left;">Educación media o secundaria alta</td>
+<td style="text-align: left;">Ninguno</td>
+<td style="text-align: left;">Enero</td>
+<td style="text-align: left;">Domingo</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: right;">63130</td>
+<td style="text-align: left;">Calarca</td>
+<td style="text-align: left;">Quindío</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">Zonas de Actividades Agropecuarias</td>
+<td style="text-align: left;">Parte rural (vereda y campo)</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: left;">Autolesión voluntaria</td>
+<td style="text-align: left;">Violenta - Suicidio</td>
+<td style="text-align: left;">Tóxico</td>
+<td style="text-align: left;">Politraumatismo</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Mestizo</td>
+<td style="text-align: right;">63130</td>
+<td style="text-align: right;">63130</td>
+<td style="text-align: left;">CALARCÁ</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: left;">QUINDÍO</td>
+<td style="text-align: right;">4.520982</td>
+<td style="text-align: right;">-75.64608</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: left;">(65 a 69)</td>
+<td style="text-align: left;">b) Mayores de Edad (&gt;18 años)</td>
+<td style="text-align: left;">(65 a 69)</td>
+<td style="text-align: left;">(Más de 60) Adulto Mayor</td>
+<td style="text-align: left;">Hombre</td>
+<td style="text-align: left;">Viudo(a)</td>
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: left;">Educación inicial y educación preescolar</td>
+<td style="text-align: left;">Ninguno</td>
+<td style="text-align: left;">Enero</td>
+<td style="text-align: left;">Jueves</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: right;">68861</td>
+<td style="text-align: left;">Vélez</td>
+<td style="text-align: left;">Santander</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: left;">Vivienda</td>
+<td style="text-align: left;">Cabecera municipal</td>
+<td style="text-align: left;">Actividades vitales o relacionadas con el cuidado personal</td>
+<td style="text-align: left;">Autolesión voluntaria</td>
+<td style="text-align: left;">Violenta - Suicidio</td>
+<td style="text-align: left;">Generadores de asfixia</td>
+<td style="text-align: left;">Trauma de cuello</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Sin información</td>
+<td style="text-align: left;">No aplica</td>
+<td style="text-align: left;">Mestizo</td>
+<td style="text-align: right;">68861</td>
+<td style="text-align: right;">68861</td>
+<td style="text-align: left;">VÉLEZ</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: left;">SANTANDER</td>
+<td style="text-align: right;">6.009275</td>
+<td style="text-align: right;">-73.67245</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<ul>
+<li><ol start="4" type="1">
+<li><em>Resumen de tipos de variables y valores faltantes</em></li>
+</ol></li>
+</ul>
+<ul>
+<li><ol start="5" type="1">
+<li><em>Número de valores únicos por columna categórica</em></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Variable</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Valores únicos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">grupo_de_edad_de_la_victima</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">grupo_mayor_menor_de_edad</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">edad_judicial</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ciclo_vital</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sexo_de_la_victima</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">estado_civil</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pais_de_nacimiento_de_la_victima</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">escolaridad</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pertenencia_grupal</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mes_del_hecho</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dia_del_hecho</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rango_de_hora_del_hecho_x_3_horas</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">municipio_del_hecho_dane</td>
+<td style="text-align: right;">978</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">departamento_del_hecho_dane</td>
+<td style="text-align: right;">34</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">escenario_del_hecho</td>
+<td style="text-align: right;">51</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">zona_del_hecho</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">actividad_durante_el_hecho</td>
+<td style="text-align: right;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">circunstancia_del_hecho</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">manera_de_muerte</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mecanismo_causal</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">diagnostico_topografico_de_la_lesion</td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">presunto_agresor</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">condicion_de_la_victima</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">medio_de_desplazamiento_o_transporte</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">servicio_del_vehiculo</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">clase_o_tipo_de_accidente</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">objeto_de_colision</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">servicio_del_objeto_de_colision</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">razon_del_suicidio</td>
+<td style="text-align: right;">21</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">localidad_del_hecho</td>
+<td style="text-align: right;">23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ancestro_racial</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">muni_nom</td>
+<td style="text-align: right;">948</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">depto_nom</td>
+<td style="text-align: right;">34</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li><ol start="6" type="1">
+<li><em>Conteo de valores únicos por columna categórica</em></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">Piped data</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">23544</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 38%">
+<col style="width: 10%">
+<col style="width: 14%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">grupo_de_edad_de_la_victima</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">grupo_mayor_menor_de_edad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">edad_judicial</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ciclo_vital</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sexo_de_la_victima</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">estado_civil</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pais_de_nacimiento_de_la_victima</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">escolaridad</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pertenencia_grupal</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mes_del_hecho</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dia_del_hecho</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">rango_de_hora_del_hecho_x_3_horas</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">municipio_del_hecho_dane</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">978</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">departamento_del_hecho_dane</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">escenario_del_hecho</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">zona_del_hecho</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">actividad_durante_el_hecho</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">98</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">circunstancia_del_hecho</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">manera_de_muerte</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mecanismo_causal</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">diagnostico_topografico_de_la_lesion</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">presunto_agresor</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">condicion_de_la_victima</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">medio_de_desplazamiento_o_transporte</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">servicio_del_vehiculo</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">clase_o_tipo_de_accidente</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">objeto_de_colision</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">servicio_del_objeto_de_colision</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">razon_del_suicidio</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">localidad_del_hecho</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ancestro_racial</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">muni_nom</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">948</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">depto_nom</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li><ol start="7" type="1">
+<li><em>Valores Faltantes</em>:</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                                  id                        a_o_del_hecho 
+                                   0                                    0 
+         grupo_de_edad_de_la_victima            grupo_mayor_menor_de_edad 
+                                   0                                    0 
+                       edad_judicial                          ciclo_vital 
+                                   0                                    0 
+                  sexo_de_la_victima                         estado_civil 
+                                   0                                    0 
+    pais_de_nacimiento_de_la_victima                          escolaridad 
+                                   0                                    0 
+                  pertenencia_grupal                        mes_del_hecho 
+                                   0                                    0 
+                       dia_del_hecho    rango_de_hora_del_hecho_x_3_horas 
+                                   0                                    0 
+               codigo_dane_municipio             municipio_del_hecho_dane 
+                                   0                                    0 
+         departamento_del_hecho_dane             codigo_dane_departamento 
+                                   0                                    0 
+                 escenario_del_hecho                       zona_del_hecho 
+                                   0                                    0 
+          actividad_durante_el_hecho              circunstancia_del_hecho 
+                                   0                                    0 
+                    manera_de_muerte                     mecanismo_causal 
+                                   0                                    0 
+diagnostico_topografico_de_la_lesion                     presunto_agresor 
+                                   0                                    0 
+             condicion_de_la_victima medio_de_desplazamiento_o_transporte 
+                                   0                                    0 
+               servicio_del_vehiculo            clase_o_tipo_de_accidente 
+                                   0                                    0 
+                  objeto_de_colision      servicio_del_objeto_de_colision 
+                                   0                                    0 
+                  razon_del_suicidio                  localidad_del_hecho 
+                                   0                                    0 
+                     ancestro_racial           codigo_dane_municipio_norm 
+                                   0                                    0 
+                            muni_cod                             muni_nom 
+                                   8                                    0 
+                           depto_cod                            depto_nom 
+                                   8                                    0 
+                             latitud                             longitud 
+                                   8                                    8 </code></pre>
+</div>
+</div>
+<ul>
+<li><ol start="8" type="1">
+<li><em>Mecanismos Causales</em>: Conteo de frecuencias de mecanismos causales variable para análisis posterior como variable dependinete en el modelo</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Agente o mecanismo explosivo                     Caústico 
+                           8                           19 
+                 Contundente                     Cortante 
+                        1405                          135 
+           Corto contundente               Corto punzante 
+                          15                          255 
+                   Eléctrico       Generadores de asfixia 
+                           2                        15410 
+Mecanismo o agente explosivo               Por determinar 
+                           1                           35 
+  Proyectil de arma de fuego                     Punzante 
+                        2345                            5 
+                     Térmico                       Tóxico 
+                          80                         3829 </code></pre>
+</div>
+</div>
+<p>se observa que el mecanismo de suicidio más común es “Generador de asfixia” con 19,123 casos, seguido por “Lesiones por arma blanca” con 1,456 casos. Otros mecanismos tienen frecuencias significativamente menores.</p>
+<ul>
+<li><ol start="9" type="1">
+<li><em>Distribución por sexo</em>: Distribución de suicidios por sexo</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Sexo</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Frecuencia Absoluta</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Frecuencia Porcentual %</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Hombre</td>
+<td style="text-align: right;">18928</td>
+<td style="text-align: right;">80.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mujer</td>
+<td style="text-align: right;">4616</td>
+<td style="text-align: right;">19.6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>La distribución por sexo muestra que la mayoría de los casos de suicidio corresponden a hombres (16,835 casos), mientras que las mujeres representan una proporción menor (6,302 casos). Esta diferencia significativa sugiere que el género es un factor importante a considerar en el análisis de los suicidios en Colombia.</p>
+<ul>
+<li><ol start="10" type="1">
+<li><strong>Gráfica de la distribución por sexo</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Gráfica Por Sexo-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La gráfica de barras horizontales ilustra la distribución de suicidios por sexo en Colombia entre 2015 y 2023. Se observa una marcada predominancia de casos en hombres, con un total de 18,205 registros (77.3%), en comparación con 5,339 casos en mujeres (22.7%). Esta diferencia significativa sugiere que los hombres tienen una mayor incidencia de suicidios en el país durante el periodo analizado.</p>
+<ul>
+<li><ol start="11" type="1">
+<li><em>Distribución de sexo por ciclo vital</em></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Distribución Ciclo vital-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La distribución de suicidios por sexo y ciclo vital en Colombia entre 2015 y 2023 revela patrones diferenciados según la etapa de la vida.</p>
+<ul>
+<li>En la infancia (0-11 años), los casos son relativamente bajos, con una ligera predominancia masculina (58.3% hombres vs.&nbsp;41.7% mujeres).</li>
+<li>Durante la adolescencia (12-17 años), la proporción de hombres aumenta a 70.2%, mientras que las mujeres representan el 29.8%.</li>
+<li>En la adultez joven (18-26 años), la brecha se amplía aún más, con un 78.1% de hombres frente a un 21.9% de mujeres.</li>
+<li>En la adultez media (27-59 años), los hombres constituyen el 80.5%, y las mujeres el 19.5%.</li>
+<li>Finalmente, en la adultez mayor (60+ años), la proporción de hombres es del 75.6%, con un 24.4% de mujeres.</li>
+</ul>
+<p>Estos datos sugieren que la incidencia de suicidios es consistentemente mayor en hombres a lo largo de todas las etapas de la vida, con una tendencia creciente en la brecha de género desde la adolescencia hasta la adultez media.</p>
+<ul>
+<li><ol start="13" type="1">
+<li><strong>Distribución de edad con histograma normalizado y KDE</strong>.</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Distribución de Edad con Histograma-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La gráfica de densidad de Kernel (KDE) y el histograma normalizado muestran la distribución de edades de los casos de suicidio en Colombia entre 2015 y 2023. La distribución presenta una ligera asimetría positiva, con una mayor concentración de casos en edades jóvenes y adultas tempranas.</p>
+<p>La descripción detallada de la distribución es la siguiente: - Sesgo a la derecha: La mayoría entre ~15–35 años; cola larga hasta ~80. - Pico principal alrededor de ~20–25. - Pocos casos &gt;60; casi nulos &gt;80. - La curva suave confirma forma asimétrica y posible ligera multimodalidad cerca de los 20 y 30s. - Eje X muestra marcas negativas por el rango automático; tus datos válidos parten de 0.</p>
+<ul>
+<li><ol start="13" type="1">
+<li><strong>Detectando datos atípicos en la variable edad mediante boxplot</strong>.</li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Detección Datos Atípicos-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Estadísticas de edad:
+Q1=20.0, Q3=50.0, IQR=30.0
+Límites para atípicos: [-25.0, 95.0]
+Atípicos bajos: 0, Atípicos altos: 0
+Total de registros válidos: 23544</code></pre>
+</div>
+</div>
+<p>El Boxplot revela la presencia de datos atípicos en la variable edad de los casos de suicidio en Colombia entre 2015 y 2023. La mayoría de los casos se concentran entre los 10 y 60 años, con una mediana alrededor de los 30 años. Sin embargo, se identifican varios valores atípicos por encima de los 70 años, que se representan como puntos individuales fuera del rango intercuartílico. Estos datos atípicos podrían indicar casos excepcionales o errores en la recopilación de datos, y su análisis detallado podría proporcionar información adicional sobre las características demográficas de los suicidios en el país.</p>
+<ul>
+<li><ol start="14" type="1">
+<li><strong>Distribución de frecuencias de mecanismos causales</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Distribución Mecanismo Causal-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La gráfica nos permite identificar los mecanismos causales más comunes y menos comunes de suicidio en el conjunto de datos. Se observa que el método predominante es la asfixia, con 15,512 casos (65.5% del total), seguido por el uso de sustancias tóxicas con 3,829 casos (16.3%). Otros métodos como armas de fuego, objetos cortopunzantes y ahogamiento presentan frecuencias significativamente menores.</p>
+<ul>
+<li><ol start="15" type="1">
+<li><strong>Distribución de frecuencias mecanismos causal Lollipop</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Distribución Mecanismo Causal Lollipop-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><ol start="18" type="1">
+<li><strong>Mecanismos causales por sexo</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Mecanismo Causal por Sexo-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La asfixia es el mecanismo predominante en ambos grupos (67% en hombres y 60% en mujeres), la principal divergencia se encuentra en los métodos secundarios. La intoxicación por tóxicos muestra una prevalencia marcadamente superior en mujeres (27%) frente a hombres (14%), mientras que el uso de armas de fuego constituye un mecanismo significativo casi exclusivamente en la población masculina (12%).</p>
+<ul>
+<li><ol start="17" type="1">
+<li><strong>Mecanismo Causal Diferencia porcentual por sexo</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Mecanismo Causal Diferencia por Sexo-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Este gráfico está diseñado para resaltar la brecha porcentual entre sexos, evidenciando que las mayores disparidades en la elección del mecanismo causal radican en el uso de tóxicos y armas de fuego. La prevalencia de tóxicos es marcadamente superior en mujeres (27% frente al 14% en hombres), mientras que el proyectil de arma de fuego es un método significativamente más frecuente en hombres (12% frente al 2% en mujeres). En contraste, la diferencia para el mecanismo más común, generadores de asfixia, es más moderada (67% vs.&nbsp;60%), y es prácticamente nula en las demás categorías de menor frecuencia.</p>
+<ul>
+<li><ol start="18" type="1">
+<li><strong>Dsitribución de frecuencias zona rural y urbana</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Distribución Zona Rual y Urbana-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>La “Cabecera Municipal” (principal área urbana) concentra tres cuartas partes de todos los casos, con un 74.2% (17,466 hechos). En contraste, la “Parte Rural” y los “Centros Poblados” suman en conjunto el 25.2%, indicando una frecuencia considerablemente menor en áreas no urbanizadas.</p>
+<ul>
+<li><ol start="20" type="1">
+<li><strong>Evolución anual de casos del hecho</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Evolución Anual-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>La gráfica muestra la evolución anual de casos con un claro crecimiento tendencial entre 2015 y 2018, leve descenso en 2019, caída marcada en 2020 y recuperación acelerada desde 2021 hasta alcanzar el máximo en 2023.</p></li>
+<li><p>Se observa un mínimo de 2.068 casos en 2015 y un máximo de 3.195 en 2023, con total n = 23.544. La forma en V alrededor de 2020 sugiere un choque exógeno o un posible subregistro en ese año; no se evalúa estacionalidad porque la unidad temporal es anual. La tendencia posterior supera el nivel pre-choque, lo que indica reanudación y aceleración de la dinámica previa.</p></li>
+<li><ol start="20" type="1">
+<li><strong>Mapa de calor de casos por departamento y tabla de participación porcentual por departamento</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### Tabla completa por departamento</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover table-condensed caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Rank</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Departamento</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Casos</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Participación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Antioquia</td>
+<td style="text-align: right; background-color: rgba(67, 191, 113, 255) !important;">3913</td>
+<td style="text-align: right; background-color: rgba(67, 191, 113, 255) !important;">0.166</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Bogotá, D.c.</td>
+<td style="text-align: right; background-color: rgba(35, 169, 131, 255) !important;">3373</td>
+<td style="text-align: right; background-color: rgba(35, 169, 131, 255) !important;">0.143</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Valle del Cauca</td>
+<td style="text-align: right; background-color: rgba(45, 113, 142, 255) !important;">2060</td>
+<td style="text-align: right; background-color: rgba(45, 113, 142, 255) !important;">0.088</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Cundinamarca</td>
+<td style="text-align: right; background-color: rgba(58, 84, 140, 255) !important;">1446</td>
+<td style="text-align: right; background-color: rgba(58, 84, 140, 255) !important;">0.061</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Santander</td>
+<td style="text-align: right; background-color: rgba(64, 69, 136, 255) !important;">1140</td>
+<td style="text-align: right; background-color: rgba(64, 69, 136, 255) !important;">0.048</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Tolima</td>
+<td style="text-align: right; background-color: rgba(69, 56, 129, 255) !important;">909</td>
+<td style="text-align: right; background-color: rgba(69, 56, 129, 255) !important;">0.039</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Norte de Santander</td>
+<td style="text-align: right; background-color: rgba(70, 52, 128, 255) !important;">837</td>
+<td style="text-align: right; background-color: rgba(70, 52, 128, 255) !important;">0.036</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Atlántico</td>
+<td style="text-align: right; background-color: rgba(70, 51, 126, 255) !important;">809</td>
+<td style="text-align: right; background-color: rgba(70, 51, 126, 255) !important;">0.034</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">Nariño</td>
+<td style="text-align: right; background-color: rgba(71, 47, 125, 255) !important;">755</td>
+<td style="text-align: right; background-color: rgba(71, 47, 125, 255) !important;">0.032</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">Huila</td>
+<td style="text-align: right; background-color: rgba(71, 46, 124, 255) !important;">736</td>
+<td style="text-align: right; background-color: rgba(71, 46, 124, 255) !important;">0.031</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">11</td>
+<td style="text-align: left;">Caldas</td>
+<td style="text-align: right; background-color: rgba(71, 45, 122, 255) !important;">712</td>
+<td style="text-align: right; background-color: rgba(71, 45, 122, 255) !important;">0.030</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">Boyacá</td>
+<td style="text-align: right; background-color: rgba(71, 45, 122, 255) !important;">709</td>
+<td style="text-align: right; background-color: rgba(71, 45, 122, 255) !important;">0.030</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">13</td>
+<td style="text-align: left;">Risaralda</td>
+<td style="text-align: right; background-color: rgba(72, 41, 121, 255) !important;">664</td>
+<td style="text-align: right; background-color: rgba(72, 41, 121, 255) !important;">0.028</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">14</td>
+<td style="text-align: left;">Cauca</td>
+<td style="text-align: right; background-color: rgba(72, 40, 120, 255) !important;">634</td>
+<td style="text-align: right; background-color: rgba(72, 40, 120, 255) !important;">0.027</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">15</td>
+<td style="text-align: left;">Bolívar</td>
+<td style="text-align: right; background-color: rgba(72, 40, 120, 255) !important;">623</td>
+<td style="text-align: right; background-color: rgba(72, 40, 120, 255) !important;">0.026</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">16</td>
+<td style="text-align: left;">Cesar</td>
+<td style="text-align: right; background-color: rgba(72, 37, 119, 255) !important;">600</td>
+<td style="text-align: right; background-color: rgba(72, 37, 119, 255) !important;">0.025</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">17</td>
+<td style="text-align: left;">Meta</td>
+<td style="text-align: right; background-color: rgba(72, 35, 116, 255) !important;">536</td>
+<td style="text-align: right; background-color: rgba(72, 35, 116, 255) !important;">0.023</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">Córdoba</td>
+<td style="text-align: right; background-color: rgba(72, 28, 111, 255) !important;">448</td>
+<td style="text-align: right; background-color: rgba(72, 28, 111, 255) !important;">0.019</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">Magdalena</td>
+<td style="text-align: right; background-color: rgba(72, 28, 110, 255) !important;">425</td>
+<td style="text-align: right; background-color: rgba(72, 28, 110, 255) !important;">0.018</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">Sucre</td>
+<td style="text-align: right; background-color: rgba(72, 27, 109, 255) !important;">402</td>
+<td style="text-align: right; background-color: rgba(72, 27, 109, 255) !important;">0.017</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">21</td>
+<td style="text-align: left;">Quindío</td>
+<td style="text-align: right; background-color: rgba(72, 27, 109, 255) !important;">399</td>
+<td style="text-align: right; background-color: rgba(72, 27, 109, 255) !important;">0.017</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">22</td>
+<td style="text-align: left;">Arauca</td>
+<td style="text-align: right; background-color: rgba(71, 16, 100, 255) !important;">247</td>
+<td style="text-align: right; background-color: rgba(71, 16, 100, 255) !important;">0.010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">23</td>
+<td style="text-align: left;">Casanare</td>
+<td style="text-align: right; background-color: rgba(71, 16, 99, 255) !important;">232</td>
+<td style="text-align: right; background-color: rgba(71, 16, 99, 255) !important;">0.010</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">24</td>
+<td style="text-align: left;">la Guajira</td>
+<td style="text-align: right; background-color: rgba(71, 16, 99, 255) !important;">231</td>
+<td style="text-align: right; background-color: rgba(71, 16, 99, 255) !important;">0.010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">Putumayo</td>
+<td style="text-align: right; background-color: rgba(71, 16, 99, 255) !important;">228</td>
+<td style="text-align: right; background-color: rgba(71, 16, 99, 255) !important;">0.010</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">Caquetá</td>
+<td style="text-align: right; background-color: rgba(71, 12, 95, 255) !important;">192</td>
+<td style="text-align: right; background-color: rgba(71, 12, 95, 255) !important;">0.008</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">27</td>
+<td style="text-align: left;">Chocó</td>
+<td style="text-align: right; background-color: rgba(69, 6, 90, 255) !important;">93</td>
+<td style="text-align: right; background-color: rgba(69, 6, 90, 255) !important;">0.004</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">28</td>
+<td style="text-align: left;">Guaviare</td>
+<td style="text-align: right; background-color: rgba(68, 3, 86, 255) !important;">46</td>
+<td style="text-align: right; background-color: rgba(68, 3, 86, 255) !important;">0.002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">29</td>
+<td style="text-align: left;">Vaupés</td>
+<td style="text-align: right; background-color: rgba(68, 3, 86, 255) !important;">46</td>
+<td style="text-align: right; background-color: rgba(68, 3, 86, 255) !important;">0.002</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">Amazonas</td>
+<td style="text-align: right; background-color: rgba(68, 3, 86, 255) !important;">42</td>
+<td style="text-align: right; background-color: rgba(68, 3, 86, 255) !important;">0.002</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">Vichada</td>
+<td style="text-align: right; background-color: rgba(68, 1, 84, 255) !important;">19</td>
+<td style="text-align: right; background-color: rgba(68, 1, 84, 255) !important;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">32</td>
+<td style="text-align: left;">Archipiélago de San Andrés, Providencia y Santa Catalina</td>
+<td style="text-align: right; background-color: rgba(68, 1, 84, 255) !important;">18</td>
+<td style="text-align: right; background-color: rgba(68, 1, 84, 255) !important;">0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">Guainía</td>
+<td style="text-align: right; background-color: rgba(68, 1, 84, 255) !important;">17</td>
+<td style="text-align: right; background-color: rgba(68, 1, 84, 255) !important;">0.001</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### Top 10 departamentos</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Rank</th>
+<th data-quarto-table-cell-role="th" style="text-align: left; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Departamento</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Casos</th>
+<th data-quarto-table-cell-role="th" style="text-align: right; font-weight: bold; color: white !important; background-color: rgba(31, 119, 180, 255) !important;">Participación</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Antioquia</td>
+<td style="text-align: right;">3913</td>
+<td style="text-align: right;">0.166</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Bogotá, D.c.</td>
+<td style="text-align: right;">3373</td>
+<td style="text-align: right;">0.143</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Valle del Cauca</td>
+<td style="text-align: right;">2060</td>
+<td style="text-align: right;">0.088</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">Cundinamarca</td>
+<td style="text-align: right;">1446</td>
+<td style="text-align: right;">0.061</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Santander</td>
+<td style="text-align: right;">1140</td>
+<td style="text-align: right;">0.048</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">Tolima</td>
+<td style="text-align: right;">909</td>
+<td style="text-align: right;">0.039</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">Norte de Santander</td>
+<td style="text-align: right;">837</td>
+<td style="text-align: right;">0.036</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">Atlántico</td>
+<td style="text-align: right;">809</td>
+<td style="text-align: right;">0.034</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">Nariño</td>
+<td style="text-align: right;">755</td>
+<td style="text-align: right;">0.032</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: left;">Huila</td>
+<td style="text-align: right;">736</td>
+<td style="text-align: right;">0.031</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+### Resumen estadístico</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top table-sm small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Total casos</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">N departamentos</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Promedio casos/depto</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Mediana</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">23541</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">713.4</td>
+<td style="text-align: right;">536</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="análisis-bivariado" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Análisis Bivariado</h1>
+<ul>
+<li><ol type="1">
+<li><strong>Por Año del hecho (tendencia anual)</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Tendencia Anual-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>El análisis de la tendencia anual de los casos de suicidio en Colombia entre 2015 y 2023 revela un patrón dinámico con fluctuaciones significativas a lo largo del periodo.</p>
+<ul>
+<li><ol start="2" type="1">
+<li><strong>Por Departamento (Top 10)</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Top 10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Las tres primeras regiones, Antioquia (24,5%) , Bogotá (21,1%) y Valle del Cauca (12,9%) , acumulan en conjunto casi el 60% del total. A partir de ahí, las cifras descienden notablemente en los demás departamentos del top 10. Se observa que Atlántico se encuentra en la octava posición de esta clasificación, con 809 casos, representando el 5.1% del total mostrado.</p></li>
+<li><ol start="3" type="1">
+<li><strong>Gráfico de barras horizontales para grupo edad de la victima</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Gráfica de Barras Horizontales por edad-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>El grupo de 20 a 24 años es el más afectado, representando el 14,5% del total. De hecho, el rango de edad entre 20 y 34 años acumula más de un tercio (35,3%) de todos los casos . También se observa una incidencia notable en adolescentes (15-19 años). A partir de la adultez joven, la frecuencia de los hechos tiende a disminuir progresivamente a medida que aumenta la edad.</p></li>
+<li><ol start="4" type="1">
+<li><strong>Sexo vs Grupo de edad</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Sexo vs Grupo de Edad-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>En mujeres (barras oscuras), la incidencia de casos se concentra de forma aguda en la adolescencia y la adultez joven, con el pico más alto entre los 15 y 24 años .</p></li>
+<li><p>En hombres (barras claras), aunque el riesgo está presente en todas las edades, la frecuencia máxima se desplaza significativamente hacia la mediana edad, alcanzando su pico en el grupo de 40 a 44 años .</p></li>
+<li><ol start="5" type="1">
+<li><strong>Boxplot de edad por sexo</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Eda_files/figure-html/Boxplot Edad por Sexo-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Estadísticas por sexo:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Hombre:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n = 18.928
+Media = 37.7
+Mediana = 35.0
+Desv. Est. = 18.5
+
+Mujer:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>n = 4.616
+Media = 29.7
+Mediana = 25.0
+Desv. Est. = 16.5</code></pre>
+</div>
+</div>
+<p>El Boxplot segmentado por sexo permite comparar la distribución de edades entre hombres y mujeres en los casos de suicidio en Colombia entre 2015 y 2023. A continuación, se describen las características principales de cada grupo:</p>
+<ol type="1">
+<li><em>Hombres</em> (n=18,928 casos)</li>
+</ol>
+<ul>
+<li><p>Edad Mediana (med=35.0): El valor central es de 35 años. Esto significa que el 50% de los hombres tenían 35 años o menos, y el otro 50% tenían 35 años o más.</p></li>
+<li><p>Concentración de Casos (La Caja): El 50% central de los casos se concentra en un rango de edad que va aproximadamente desde los 24 hasta los 50 años. Esta es la franja de edad más común para este suceso en hombres.</p></li>
+<li><p>Rango Total (Los Bigotes): Las edades se extienden en un rango muy amplio, desde la adolescencia temprana (alrededor de los 10 años) hasta la vejez (cerca de los 80 años).</p></li>
+</ul>
+<ol start="2" type="1">
+<li><em>Mujeres</em> (n=4,616 casos)</li>
+</ol>
+<ul>
+<li><p>Edad Mediana (med=25.0): La edad mediana para las mujeres es de 25 años, es decir, 10 años más joven que la de los hombres.</p></li>
+<li><p>Concentración de Casos (La Caja): El 50% central de los casos se agrupa en un rango de edad más joven y más compacto que en los hombres, aproximadamente entre los 19 y los 40 años.</p></li>
+<li><p>Rango Total (Los Bigotes): Al igual que en los hombres, el rango es amplio, pero parece tener un límite superior ligeramente menor, llegando hasta aproximadamente los 70 años.</p></li>
+<li><ol start="6" type="1">
+<li><strong>Tabla: Razones más comunes del suicidio</strong></li>
+</ol></li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Top 10 razones del suicidio:</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 razon_del_suicidio Frecuencia
+1                   Sin información      12444
+2        Enfermedad física o mental       3717
+3  Conflicto con pareja o ex pareja       2493
+4                           Desamor       1538
+5                        Económicas       1453
+6                             Otras        629
+7     Muerte de un familiar o amigo        341
+8     Abuso de sustancias y alcohol        332
+9                         Jurídicas        137
+10           Escolares - educativas        114</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+
+<div style="border-top: 1px solid #555; margin-top: 20px; padding-top: 10px; 
+color: #888; font-size: 12px;">
+  By Jesús D. Zamora Thowinsson.
+  <div style="margin-top: 5px;">
+    © Copyright 2025.
+  </div>
+</div>
+
+<!-- Iconos Bootstrap -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+.top-right-icons {
+  position: fixed;
+  top: 10px;
+  right: 15px;
+  z-index: 9999;
+  display: flex;
+  gap: 10px;
+}
+.top-right-icons a {
+  color: var(--bs-navbar-color);
+  font-size: 1.3rem;
+  text-decoration: none;
+}
+.top-right-icons a:hover {
+  color: var(--bs-navbar-hover-color);
+}
+</style>
+
+<div class="top-right-icons">
+  <!-- GitHub -->
+  <a href="https://github.com/jthowinsson/Dengue3" target="_blank" title="Repositorio">
+    <i class="bi bi-github"></i>
+  </a>
+
+  <!-- Descargar PDF -->
+  <a href="Dengue3.pdf" download="Dengue3.pdf" title="Descargar PDF">
+    <i class="bi bi-file-earmark-pdf"></i>
+  </a>
+
+  <!-- Descargar Markdown -->
+  <a href="index.md" download="index.md" title="Descargar Markdown">
+    <i class="bi bi-file-earmark-text"></i>
+  </a>
+
+  <!-- Pantalla completa -->
+  <a href="javascript:void(0)" onclick="document.documentElement.requestFullscreen()" title="Pantalla completa">
+    <i class="bi bi-arrows-fullscreen"></i>
+  </a>
+
+  <!-- Light / Dark -->
+  <a href="javascript:void(0)" id="theme-toggle" title="Cambiar tema">
+    <i class="bi bi-sun-fill" id="theme-icon"></i>
+  </a>
+</div>
+
+<script>
+const html = document.documentElement;
+const icon = document.getElementById('theme-icon');
+const toggle = document.getElementById('theme-toggle');
+const saved = localStorage.getItem('quarto-color-scheme');
+
+if (saved === 'dark') {
+  html.setAttribute('data-bs-theme', 'dark');
+  icon.className = 'bi bi-moon-fill';
+}
+
+toggle.addEventListener('click', () => {
+  if (html.getAttribute('data-bs-theme') === 'dark') {
+    html.removeAttribute('data-bs-theme');
+    icon.className = 'bi bi-sun-fill';
+    localStorage.setItem('quarto-color-scheme', 'light');
+  } else {
+    html.setAttribute('data-bs-theme', 'dark');
+    icon.className = 'bi bi-moon-fill';
+    localStorage.setItem('quarto-color-scheme', 'dark');
+  }
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./intro.html" class="pagination-link" aria-label="Introducción">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./summary.html" class="pagination-link" aria-label="Summary">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Summary</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
